@@ -20,3 +20,18 @@ steps:
     npm install
     ng build --prod
   displayName: 'npm install and build'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(System.DefaultWorkingDirectory)/dist'
+    ArtifactName: 'drop'
+
+- task: AzureWebApp@1
+  displayName: 'Azure App Service Deploy'
+  inputs:
+    azureSubscription: 'Free Trial (77db3f68-d582-4d8b-aade-dbe339640da7)'
+    appType: 'webApp'
+    appName: 'angular-web-dev'
+    package: '$(System.DefaultWorkingDirectory)/drop/**/*.zip'
+
